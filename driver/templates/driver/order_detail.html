@@ -1,0 +1,33 @@
+{% extends "driver/base.html" %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <h5>Order #{{ order.id }}</h5>
+    <p><strong>Customer:</strong> {{ order.customer.name if order.customer else 'Unknown' }}</p>
+    <p><strong>Restaurant:</strong> {{ order.restaurant.name if order.restaurant else 'Unknown' }}</p>
+    <p><strong>Alamat Pengantaran:</strong> {{ order.address_delivery }}</p>
+    <p><strong>Total:</strong> Rp {{ order.total_price }}</p>
+    <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+    <p><strong>Catatan:</strong> {{ order.notes|default:"-" }}</p>
+
+    <div class="mt-3">
+      {% if order.driver %}
+        <p><strong>Driver:</strong> {{ order.driver }}</p>
+      {% else %}
+        <p><em>Order belum ada driver.</em></p>
+      {% endif %}
+    </div>
+
+    <div class="mt-3">
+      {% if not order.driver and driver.is_available and order.status == 'pending' %}
+        <form method="post" action="{% url 'driver:accept_order' order.id %}">
+          {% csrf_token %}
+          <button class="btn btn-primary">Terima Order</button>
+        </form>
+      {% endif %}
+      <a class="btn btn-secondary" href="{% url 'driver:dashboard' %}">Kembali</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

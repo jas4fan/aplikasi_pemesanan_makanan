@@ -1,0 +1,71 @@
+{% extends "driver/base.html" %}
+{% block title %}Dashboard | Driver{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Profil</h5>
+        <p><strong>{{ driver.user.get_full_name|default:driver.user.username }}</strong></p>
+        <p>{{ driver.phone }}</p>
+        <p>Kendaraan: {{ driver.vehicle }}</p>
+        <p>Status: {% if driver.is_available %}<span class="badge bg-success">Tersedia</span>{% else %}<span class="badge bg-warning">Tidak tersedia</span>{% endif %}</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Unassigned Orders</h6>
+        {% if unassigned_orders %}
+          <ul class="list-group">
+            {% for o in unassigned_orders %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                #{{ o.id }} - {{ o.restaurant.name }} 
+                <a href="{% url 'driver:order_detail' o.id %}" class="btn btn-sm btn-outline-primary">Lihat</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="mb-0">Tidak ada order kosong.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Assigned Orders</h5>
+        {% if assigned_orders %}
+          <div class="list-group">
+            {% for o in assigned_orders %}
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">#{{ o.id }} — {{ o.restaurant.name }}</h6>
+                  <small>{{ o.created_at|date:"Y-m-d H:i" }}</small>
+                </div>
+                <p class="mb-1">Alamat: {{ o.address_delivery|truncatechars:80 }}</p>
+                <p class="mb-1">Status: <strong>{{ o.get_status_display }}</strong></p>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'driver:order_detail' o.id %}">Detail</a>
+                {% if o.status == 'accepted' %}
+                  <form method="post" action="{% url 'driver:start_delivery' o.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-primary">Mulai Antar</button>
+                  </form>
+                {% elif o.status == 'on_delivery' %}
+                  <form method="post" action="{% url 'driver:complete_order' o.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-success">Selesaikan</button>
+                  </form>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>Tidak ada order yang ditugaskan padamu.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
