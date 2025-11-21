@@ -1,0 +1,25 @@
+<h2>Order Supervisor</h2>
+
+<h3>Tambah Order</h3>
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="customer_name" placeholder="Customer Name" required>
+    <input type="text" name="item_name" placeholder="Item Name" required>
+    <input type="number" name="quantity" placeholder="Quantity" required>
+    <button type="submit">Tambah</button>
+</form>
+
+<hr>
+
+<h3>Daftar Order</h3>
+<ul>
+    {% for order in orders %}
+        <li>
+            {{ order.customer_name }} - {{ order.item_name }} ({{ order.quantity }})
+            <a href="{% url 'delete_order' order.id %}">Hapus</a>
+        </li>
+    {% empty %}
+        <p>Belum ada order.</p>
+    {% endfor %}
+</ul>
+

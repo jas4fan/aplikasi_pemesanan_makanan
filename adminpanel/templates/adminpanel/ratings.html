@@ -1,0 +1,25 @@
+<h2>Rating Moderator</h2>
+
+<h3>Tambah Rating</h3>
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="customer_name" placeholder="Customer Name" required>
+    <input type="number" name="rating" placeholder="Rating (1-5)" required>
+    <textarea name="comment" placeholder="Comment"></textarea>
+    <button type="submit">Tambah</button>
+</form>
+
+<hr>
+
+<h3>Daftar Rating</h3>
+<ul>
+    {% for r in ratings %}
+        <li>
+            {{ r.customer_name }} - Rating: {{ r.rating }} - {{ r.comment }}
+            <a href="{% url 'delete_rating' r.id %}">Hapus</a>
+        </li>
+    {% empty %}
+        <p>Belum ada rating.</p>
+    {% endfor %}
+</ul>
+

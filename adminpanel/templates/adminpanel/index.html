@@ -1,102 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Admin Panel - Aplikasi Pemesanan Makanan</title>
-  <style>
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ddd; padding: 8px; }
-    th { background: #f2f2f2; }
-    .small { font-size: 90%; color: #666; }
-  </style>
+    <title>Admin Panel - Dashboard</title>
+    <meta charset="UTF-8">
 </head>
 <body>
-  <h2>Admin Panel</h2>
+    <h1>Selamat Datang di Admin Panel</h1>
+    <p>Silakan pilih salah satu menu di bawah untuk mengelola sistem.</p>
 
-  <!-- USERS -->
-  <h3>Users</h3>
-  <table>
-    <tr><th>Name</th><th>Email</th><th>Role</th><th>Action</th></tr>
-    {% for u in users %}
-    <tr>
-      <td>{{ u.name }}</td>
-      <td class="small">{{ u.email }}</td>
-      <td>{{ u.role }}</td>
-      <td>
-        <form method="post" action="{% url 'adminpanel:delete_user' u.id %}" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit">Delete</button>
-        </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
-
-  <h4>Add User</h4>
-  <form method="post" action="{% url 'adminpanel:add_user' %}">
-    {% csrf_token %}
-    <input name="name" placeholder="Name" required>
-    <input name="email" placeholder="Email" required>
-    <select name="role">
-      <option value="customer">Customer</option>
-      <option value="driver">Driver</option>
-      <option value="restaurant">Restaurant</option>
-      <option value="admin">Admin</option>
-    </select>
-    <button type="submit">Add</button>
-  </form>
-
-  <hr>
-
-  <!-- DRIVERS -->
-  <h3>Drivers</h3>
-  <table>
-    <tr><th>Name</th><th>Phone</th><th>Vehicle</th><th>Status</th><th>Action</th></tr>
-    {% for d in drivers %}
-    <tr>
-      <td>{{ d.user.name }}</td>
-      <td>{{ d.phone }}</td>
-      <td>{{ d.vehicle }}</td>
-      <td>{{ d.is_active|yesno:"Active,Inactive" }}</td>
-      <td>
-        <form method="post" action="{% url 'adminpanel:toggle_driver' d.id %}" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit">Toggle Active</button>
-        </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
-
-  <h4>Add Driver (new user)</h4>
-  <form method="post" action="{% url 'adminpanel:add_driver' %}">
-    {% csrf_token %}
-    <input name="name" placeholder="Name">
-    <input name="email" placeholder="Email">
-    <button type="submit">Add Driver</button>
-  </form>
-
-  <hr>
-
-  <!-- RATINGS -->
-  <h3>Ratings</h3>
-  <table>
-    <tr><th>Target</th><th>Value</th><th>Comment</th><th>Action</th></tr>
-    {% for r in ratings %}
-    <tr>
-      <td>{{ r.target_user.name }}</td>
-      <td>{{ r.value }}</td>
-      <td>{{ r.comment }}</td>
-      <td>
-        <form method="post" action="{% url 'adminpanel:delete_rating' r.id %}" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit">Delete</button>
-        </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
-
+    <ul>
+        <li><a href="/dashboard/">Dashboard</a></li>
+        <li><a href="/restaurant/">Restaurant Manager</a></li>
+        <li><a href="/orders/">Order Supervisor</a></li>
+        <li><a href="/ratings/">Rating Moderator</a></li>
+    </ul>
 </body>
 </html>
 

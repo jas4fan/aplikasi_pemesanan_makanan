@@ -1,0 +1,11 @@
+<h2>Restaurant Manager</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="restaurant_name" value="{{ info.restaurant_name }}" required>
+    <input type="text" name="address" value="{{ info.address }}" required>
+    <input type="text" name="open_hours" value="{{ info.open_hours }}" required>
+    <button type="submit">Simpan Perubahan</button>
+</form>
+
+
