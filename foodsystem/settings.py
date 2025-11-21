@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-_gqw*x5bjw^z$6n0uzx_xx*$chb*%uw%p)k%i#0eq2%95toqjx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pibal']
 
 
 # Application definition
@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'adminpanel',
+    'driver',
+    'restaurant',
+    'chat',
+    'customer',
 ]
 
 MIDDLEWARE = [
