@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Pemesanan Makanan</title>
+    <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+
+<div class="chat-container">
+    <h2>Chat Bantuan Pemesanan</h2>
+
+    <div class="messages" id="messages"></div>
+
+    <form id="chatForm">
+        {% csrf_token %}
+        <input type="text" id="username" placeholder="Nama Anda..." required>
+        <input type="text" id="message" placeholder="Ketik pesan..." required>
+        <button type="submit">Kirim</button>
+    </form>
+</div>
+
+<script>
+    function loadMessages() {
+        fetch("/chat/get/")
+            .then(res => res.json())
+            .then(data => {
+                let box = document.getElementById("messages");
+                box.innerHTML = "";
+                data.reverse().forEach(msg => {
+                    box.innerHTML += `
+                        <div class="bubble">
+                            <strong>${msg.username}</strong> <span>${msg.timestamp}</span><br>
+                            ${msg.text}
+                        </div>
+                    `;
+                });
+            });
+    }
+
+    setInterval(loadMessages, 1000);
+    loadMessages();
+
+    document.getElementById("chatForm").onsubmit = function (e) {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append("username", document.getElementById("username").value);
+        formData.append("text", document.getElementById("message").value);
+        formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+
+        fetch("/chat/send/", {
+            method: "POST",
+            body: formData
+        }).then(() => {
+            document.getElementById("message").value = "";
+            loadMessages();
+        });
+    }
+</script>
+
+</body>
+</html>
