@@ -27,6 +27,7 @@ urlpatterns = [
     path('orders/', views.orders_view, name='order_supervisor'),
     path('ratings/', views.ratings_view, name='rating_moderator'),
     path('driver/', include('driver.urls')),
+    path('chat/', include('chat.urls')),
     path('driver', RedirectView.as_view(url='/driver/login/', permanent=False)),
 ]
 

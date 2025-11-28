@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import DriverLoginForm, DriverRegistrationForm, DriverProfileForm
 from .models import DriverProfile
+from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -62,21 +64,19 @@ def logout_view(request):
     messages.success(request, 'Logout berhasil!')
     return redirect('driver:login')
 
-@login_required(login_url='driver:login')
-def dashboard(request):
-    # Auto-create DriverProfile jika belum ada
-    driver, created = DriverProfile.objects.get_or_create(user=request.user)
-    
-    # Placeholder untuk order (setelah Order model dibuat tim lain)
-    unassigned_orders = []
-    assigned_orders = []
-    
-    context = {
-        'driver': driver,
-        'unassigned_orders': unassigned_orders,
-        'assigned_orders': assigned_orders,
-    }
-    return render(request, 'driver/dashboard.html', context)
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = 'driver/dashboard.html'
+    login_url = 'driver:login'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        driver, _ = DriverProfile.objects.get_or_create(user=self.request.user)
+        context.update({
+            'driver': driver,
+            'unassigned_orders': [],
+            'assigned_orders': [],
+        })
+        return context
 
 @login_required(login_url='driver:login')
 def order_detail(request, order_id):
