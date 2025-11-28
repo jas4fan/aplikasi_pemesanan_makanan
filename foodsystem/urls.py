@@ -20,11 +20,13 @@ from adminpanel import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path("", include("adminpanel.urls")),
     path('admin/', admin.site.urls),
     path('dashboard/', views.index, name='dashboard'),
     path('restaurant/', views.restaurant_manager_view, name='restaurant_manager'),
     path('orders/', views.orders_view, name='order_supervisor'),
     path('ratings/', views.ratings_view, name='rating_moderator'),
+
+    # tambahkan URL untuk chat
+    path('chat/', views.chat_view, name='chat'),
 ]
 
