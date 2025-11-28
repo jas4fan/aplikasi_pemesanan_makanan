@@ -3,7 +3,8 @@ from django.http import JsonResponse
 from .models import Message
 
 def chat_page(request):
-    return render(request, "chat/chat.html")
+    # template ada di chat/templates/chat.html -> render "chat.html"
+    return render(request, "chat.html")
 
 def send_message(request):
     username = request.POST.get("username")
@@ -22,3 +23,7 @@ def get_messages(request):
         for msg in messages
     ]
     return JsonResponse(data, safe=False)
+
+# alias supaya urls.py tetap pakai views.index
+def index(request):
+    return chat_page(request)
