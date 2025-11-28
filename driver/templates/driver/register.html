@@ -1,0 +1,125 @@
+{% extends "driver/base.html" %}
+{% block title %}Register | Driver{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-success text-white">
+        <h4 class="mb-0">📝 Daftar Sebagai Driver</h4>
+      </div>
+      <div class="card-body">
+        
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <form method="post" novalidate>
+          {% csrf_token %}
+          
+          <!-- Section: Data Akun -->
+          <h6 class="mb-3 text-primary">📋 Data Akun</h6>
+          
+          <div class="mb-3">
+            <label for="{{ user_form.username.id_for_label }}" class="form-label">
+              {{ user_form.username.label }}
+            </label>
+            {{ user_form.username }}
+            {% if user_form.username.errors %}
+              <small class="text-danger d-block mt-1">{{ user_form.username.errors }}</small>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label for="{{ user_form.email.id_for_label }}" class="form-label">
+              {{ user_form.email.label }}
+            </label>
+            {{ user_form.email }}
+            {% if user_form.email.errors %}
+              <small class="text-danger d-block mt-1">{{ user_form.email.errors }}</small>
+            {% endif %}
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="{{ user_form.first_name.id_for_label }}" class="form-label">
+                {{ user_form.first_name.label }}
+              </label>
+              {{ user_form.first_name }}
+              {% if user_form.first_name.errors %}
+                <small class="text-danger d-block mt-1">{{ user_form.first_name.errors }}</small>
+              {% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="{{ user_form.last_name.id_for_label }}" class="form-label">
+                {{ user_form.last_name.label }}
+              </label>
+              {{ user_form.last_name }}
+              {% if user_form.last_name.errors %}
+                <small class="text-danger d-block mt-1">{{ user_form.last_name.errors }}</small>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="{{ user_form.password1.id_for_label }}" class="form-label">
+              {{ user_form.password1.label }}
+            </label>
+            {{ user_form.password1 }}
+            {% if user_form.password1.errors %}
+              <small class="text-danger d-block mt-1">{{ user_form.password1.errors }}</small>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label for="{{ user_form.password2.id_for_label }}" class="form-label">
+              {{ user_form.password2.label }}
+            </label>
+            {{ user_form.password2 }}
+            {% if user_form.password2.errors %}
+              <small class="text-danger d-block mt-1">{{ user_form.password2.errors }}</small>
+            {% endif %}
+          </div>
+
+          <hr>
+
+          <!-- Section: Data Kendaraan -->
+          <h6 class="mb-3 text-primary">🚗 Data Kendaraan</h6>
+
+          <div class="mb-3">
+            <label for="{{ profile_form.phone.id_for_label }}" class="form-label">
+              {{ profile_form.phone.label }}
+            </label>
+            {{ profile_form.phone }}
+            {% if profile_form.phone.errors %}
+              <small class="text-danger d-block mt-1">{{ profile_form.phone.errors }}</small>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label for="{{ profile_form.vehicle.id_for_label }}" class="form-label">
+              {{ profile_form.vehicle.label }}
+            </label>
+            {{ profile_form.vehicle }}
+            {% if profile_form.vehicle.errors %}
+              <small class="text-danger d-block mt-1">{{ profile_form.vehicle.errors }}</small>
+            {% endif %}
+          </div>
+
+          <button type="submit" class="btn btn-success w-100 mb-2">📝 Daftar</button>
+        </form>
+
+        <p class="text-center text-muted mb-0">
+          Sudah punya akun? <a href="{% url 'driver:login' %}">Login di sini</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

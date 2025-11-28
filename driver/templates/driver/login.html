@@ -4,21 +4,43 @@
 <div class="row justify-content-center">
   <div class="col-md-5">
     <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">🔐 Driver Login</h4>
+      </div>
       <div class="card-body">
-        <h4 class="card-title mb-3">Driver Login</h4>
+        
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger alert-dismissible fade show">
+            {{ form.non_field_errors }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endif %}
+        
         <form method="post" novalidate>
           {% csrf_token %}
-          {{ form.non_field_errors }}
+          
           <div class="mb-3">
-            {{ form.username.label_tag }}
+            <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
             {{ form.username }}
+            {% if form.username.errors %}
+              <small class="text-danger d-block mt-1">{{ form.username.errors }}</small>
+            {% endif %}
           </div>
+          
           <div class="mb-3">
-            {{ form.password.label_tag }}
+            <label for="{{ form.password.id_for_label }}" class="form-label">{{ form.password.label }}</label>
             {{ form.password }}
+            {% if form.password.errors %}
+              <small class="text-danger d-block mt-1">{{ form.password.errors }}</small>
+            {% endif %}
           </div>
-          <button class="btn btn-primary w-100" type="submit">Masuk</button>
+          
+          <button type="submit" class="btn btn-primary w-100 mb-2">Login</button>
         </form>
+
+        <p class="text-center text-muted mb-0">
+          Belum punya akun? <a href="{% url 'driver:register' %}" class="fw-bold">Daftar di sini</a>
+        </p>
       </div>
     </div>
   </div>

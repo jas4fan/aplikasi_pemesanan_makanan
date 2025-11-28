@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 from adminpanel import views
 
 urlpatterns = [
@@ -25,8 +26,7 @@ urlpatterns = [
     path('restaurant/', views.restaurant_manager_view, name='restaurant_manager'),
     path('orders/', views.orders_view, name='order_supervisor'),
     path('ratings/', views.ratings_view, name='rating_moderator'),
-
-    # tambahkan URL untuk chat
-    path('chat/', views.chat_view, name='chat'),
+    path('driver/', include('driver.urls')),
+    path('driver', RedirectView.as_view(url='/driver/login/', permanent=False)),
 ]
 
