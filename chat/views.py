@@ -1,33 +1,24 @@
 from django.shortcuts import render
-from .chat_oop import ChatUser, ChatSystem
+from django.http import JsonResponse
+from .models import Message
 
-# Buat sistem chat
-chat_sys = ChatSystem()
+def chat_page(request):
+    return render(request, "chat/chat.html")
 
-# Buat user
-customer = ChatUser("Budi", "Customer")
-driver = ChatUser("Andi", "Driver")
-restaurant = ChatUser("Restoran Maju", "Restaurant")
-admin = ChatUser("Admin Pusat", "Admin")
+def send_message(request):
+    username = request.POST.get("username")
+    text = request.POST.get("text")
+    Message.objects.create(username=username, text=text)
+    return JsonResponse({"status": "success"})
 
-# Tambah user ke sistem
-for u in [customer, driver, restaurant, admin]:
-    chat_sys.add_user(u)
-
-
-def chat_view(request):
-    if request.method == "POST":
-        sender_name = request.POST.get("sender")
-        receiver_name = request.POST.get("receiver")
-        message = request.POST.get("message")
-
-        sender = chat_sys.get_user(sender_name)
-        receiver = chat_sys.get_user(receiver_name)
-
-        if sender and receiver:
-            sender.send(receiver, message)
-
-    context = {
-        "users": chat_sys.users
-    }
-    return render(request, "chat/chat.html", context)
+def get_messages(request):
+    messages = Message.objects.order_by("-timestamp")[:20]
+    data = [
+        {
+            "username": msg.username,
+            "text": msg.text,
+            "timestamp": msg.timestamp.strftime("%H:%M")
+        }
+        for msg in messages
+    ]
+    return JsonResponse(data, safe=False)
