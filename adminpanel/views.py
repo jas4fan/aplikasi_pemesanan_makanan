@@ -82,3 +82,6 @@ def restaurant_manager_view(request):
 def index(request):
     return render(request, 'adminpanel/index.html')
 
+
+def chat_view(request):
+    return render(request, 'chat.html')
