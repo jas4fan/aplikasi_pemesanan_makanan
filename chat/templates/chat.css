@@ -1,0 +1,8 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #f9f9f9;
+}
+h2 { color: #333; }
+textarea { width: 300px; }
+button { background-color: #4CAF50; color: white; padding: 5px 10px; border: none; }
